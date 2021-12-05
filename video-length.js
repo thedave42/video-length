@@ -28,18 +28,25 @@ async function VideoLength(file, options = {}){
       if(!video_specs){
          throw new TypeError('Can\'t find "Video" track');
       }
+      
+      let audio_specs = track.find(i => i['@type'] == 'Audio');
+      if (!audio_specs) {
+         throw new TypeError('Can\'t find "Audio" track');
+      }
 
       let { Duration, FrameRate, OverallBitRate, FileSize } = general_specs;
       let { Width, Height } = video_specs;
-
+      let { StreamCount } = audio_specs;
+      
       if(extended){
          result = {
-            duration : parseFloat(Duration),
-            width    : parseFloat(Width),
-            height   : parseFloat(Height),
-            fps      : parseFloat(FrameRate),
-            bitrate  : parseFloat(OverallBitRate),
-            size     : parseFloat(FileSize),
+            duration       : parseFloat(Duration),
+            width          : parseFloat(Width),
+            height         : parseFloat(Height),
+            fps            : parseFloat(FrameRate),
+            bitrate        : parseFloat(OverallBitRate),
+            size           : parseFloat(FileSize),
+            audio_tracks   : parseFloat(StreamCount),
          }
       }else if(giveall){
          result = specs;
